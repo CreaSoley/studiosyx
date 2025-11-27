@@ -1,0 +1,77 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  padding: 2rem;
+}
+
+.logo {
+  width: 100px;
+}
+
+main {
+  padding: 1rem;
+}
+
+.main-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  background: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.accordion-button {
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: #eee;
+  margin-bottom: 0.2rem;
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
+
+.accordion-button.active {
+  background: #ccc;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: #f1f1f1;
+  padding-left: 1rem;
+}
+
+.oeuvre {
+  margin: 1rem 0;
+}
+
+.oeuvre img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.highlight img {
+  max-width: 80%;
+  border-radius: 10px;
+  display: block;
+  margin: 1rem auto;
+}
