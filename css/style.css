@@ -70,11 +70,13 @@ main {
 }
 
 .highlight img {
-  max-width: 80%;
-  border-radius: 10px;
+  max-width: 300px;     /* ou 250px selon ton goût */
+  height: auto;
   display: block;
   margin: 1rem auto;
+  border-radius: 10px;
 }
+
 .oeuvre {
   background: white;
   margin: 1rem 0;
