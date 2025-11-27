@@ -12,7 +12,8 @@ header {
 }
 
 .logo {
-  width: 100px;
+  width: 180px;      /* Ajuste selon la taille souhaitée */
+  height: auto;
 }
 
 main {
@@ -94,4 +95,13 @@ main {
 .oeuvre h3 {
   margin-top: 0.5rem;
   font-size: 1.2rem;
+}
+.accordion-content .oeuvre img {
+  width: 340px;          /* équivalent ~9 cm */
+  height: 340px;         /* carré */
+  object-fit: contain;   /* conserve les proportions sans rogner */
+  background: #fff;      /* optionnel : fond blanc si l’image n'est pas carrée */
+  padding: 5px;          /* optionnel */
+  border-radius: 6px;
+  display: block;
 }
