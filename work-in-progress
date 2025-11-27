@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work In Progress</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Work In Progress</h1>
+    <a href="index.html">← Retour à l'accueil</a>
+  </header>
+
+  <main>
+    <div class="accordion">
+      <button class="accordion-button">Projet 1</button>
+      <div class="accordion-content">
+        <!-- Ajouter vos œuvres ici -->
+      </div>
+
+      <button class="accordion-button">Projet 2</button>
+      <div class="accordion-content">
+        <!-- Ajouter vos œuvres ici -->
+      </div>
+
+      <button class="accordion-button">Projet 3</button>
+      <div class="accordion-content">
+        <!-- Ajouter vos œuvres ici -->
+      </div>
+    </div>
+  </main>
+
+  <script src="js/accordion.js"></script>
+</body>
+</html>
