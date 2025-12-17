@@ -186,3 +186,74 @@ main {
     margin: 0 auto;      /* Centre la photo */
   }
 }
+/* S'assure que le viewport est bien pris en compte */
+html, body {
+  height: 100%;
+}
+
+/* PAGE D'ACCUEIL SPÉCIFIQUE */
+body.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Pour éviter le scroll : */
+  overflow-y: hidden;
+}
+
+/* Réduire l'espace vertical du header sur la home */
+body.home header {
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Logo un peu plus proche du titre */
+body.home .logo {
+  width: 230px;          /* taille du logo sur la home */
+  height: auto;
+  display: block;
+  margin: 0 auto 0.2rem auto; /* petit espace sous le logo */
+}
+
+/* Réduire l'espace entre logo et titre + taille un peu plus souple */
+body.home header h1 {
+  margin: 0.1rem 0 0;    /* quasi aucun espace au-dessus et au-dessous */
+  font-size: clamp(2.6rem, 5vw, 3.6rem); /* s’adapte mobile / desk */
+}
+
+/* Main compact + centré */
+body.home main {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Image d'accueil : taille contrôlée pour éviter le scroll */
+body.home .highlight img {
+  display: block;
+  margin: 0.4rem auto 0.6rem;
+  max-width: 260px;      /* taille par défaut (mobile) */
+  height: auto;
+  max-height: 30vh;      /* ne prend pas trop de hauteur sur petits écrans */
+  border-radius: 10px;
+}
+
+/* Sur desktop : agrandir un peu l'image */
+@media (min-width: 768px) {
+  body.home .highlight img {
+    max-width: 380px;    /* image plus grande sur écran large */
+    max-height: 40vh;
+  }
+}
+
+/* Navigation plus compacte pour limiter la hauteur totale */
+body.home .main-nav {
+  margin-top: 0.4rem;
+  gap: 0.5rem 0.8rem;
+}
+
+body.home .btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.95rem;
+}
