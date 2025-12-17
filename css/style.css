@@ -20,7 +20,7 @@ header {
 }
 header h1 {
   font-family: 'CreamCake', sans-serif; /* Utilise la police personnalisée */
-  font-size: 3rem;                     /* Ajustez la taille selon vos besoins */
+  font-size: 4rem;                     /* Ajustez la taille selon vos besoins */
   color: #333;                         /* Couleur du titre */
   margin-bottom: 0.5rem;
 }
