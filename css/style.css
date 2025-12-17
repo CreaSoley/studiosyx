@@ -1,12 +1,23 @@
-/* 1. Déclaration de la police personnalisée */
+/* =========================
+   POLICE PERSONNALISÉE
+========================= */
 @font-face {
   font-family: 'CreamCake';
   src: url('../fonts/Cream Cake Bold.otf') format('opentype');
-  font-weight: bold;
+  font-weight: 700;
   font-style: normal;
 }
 
-/* ... reste de votre CSS existant ... */body {
+/* =========================
+   BASE
+========================= */
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -14,37 +25,48 @@
   color: #333;
 }
 
+/* =========================
+   HEADER (global)
+========================= */
 header {
   text-align: center;
-  padding: 2rem;
-}
-header h1 {
-  font-family: 'CreamCake', sans-serif; /* Utilise la police personnalisée */
-  font-size: 4rem;                     /* Ajustez la taille selon vos besoins */
-  color: #333;                         /* Couleur du titre */
-  margin-bottom: 0.5rem;
-}
-/* Style pour la zone de texte sous le titre principal */
-.header-description {
-  font-family: Arial, sans-serif; /* Même police que le corps et les accordéons */
-  font-size: 1.1rem;              /* Même taille que .accordion-button */
-  color: #333;                    /* Même couleur de texte */
-  max-width: 800px;               /* Optionnel : pour éviter que le texte soit trop large sur grand écran */
-  margin: 0 auto 1.5rem auto;     /* Centre le bloc et ajoute de l'espace en bas */
-  line-height: 1.5;               /* Améliore la lisibilité */
+  padding: 2rem 1rem;
 }
 
-/* On s'assure que le lien de retour ne colle pas au texte */
+header h1 {
+  font-family: 'CreamCake', sans-serif;
+  font-size: 4rem;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Zone de texte sous le titre principal (si utilisée) */
+.header-description {
+  font-family: Arial, sans-serif;
+  font-size: 1.1rem;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto 1.5rem auto;
+  line-height: 1.5;
+}
+
+/* Lien retour */
 header a {
   display: inline-block;
   margin-top: 10px;
 }
 
+/* Logo (global) */
 .logo {
-  width: 250px;      /* Ajuste selon la taille souhaitée */
+  width: 250px;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
+/* =========================
+   MAIN / NAV
+========================= */
 main {
   padding: 1rem;
 }
@@ -63,8 +85,23 @@ main {
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
+  display: inline-block;
 }
 
+/* =========================
+   IMAGE HIGHLIGHT (accueil)
+========================= */
+.highlight img {
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 10px;
+}
+
+/* =========================
+   ACCORDÉON
+========================= */
 .accordion-button {
   width: 100%;
   padding: 1rem;
@@ -90,23 +127,9 @@ main {
   padding-left: 1rem;
 }
 
-.oeuvre {
-  margin: 1rem 0;
-}
-
-.oeuvre img {
-  max-width: 100%;
-  border-radius: 5px;
-}
-
-.highlight img {
-  max-width: 300px;     /* ou 250px selon ton goût */
-  height: auto;
-  display: block;
-  margin: 1rem auto;
-  border-radius: 10px;
-}
-
+/* =========================
+   CARTES OEUVRES
+========================= */
 .oeuvre {
   background: white;
   margin: 1rem 0;
@@ -125,135 +148,162 @@ main {
   margin-top: 0.5rem;
   font-size: 1.2rem;
 }
+
+/* Images carrées dans l’accordéon */
 .accordion-content .oeuvre img {
-  width: 340px;          /* équivalent ~9 cm */
-  height: 340px;         /* carré */
-  object-fit: contain;   /* conserve les proportions sans rogner */
-  background: #fff;      /* optionnel : fond blanc si l’image n'est pas carrée */
-  padding: 5px;          /* optionnel */
+  width: 340px;
+  height: 340px;
+  object-fit: contain;
+  background: #fff;
+  padding: 5px;
   border-radius: 6px;
   display: block;
 }
-/* Conteneur principal À Propos */
+
+/* =========================
+   PAGE "À PROPOS" (si utilisée)
+   (conserve ton approche)
+========================= */
 .about-container {
   display: flex;
-  flex-wrap: wrap;       /* Permet de passer l'un sous l'autre sur mobile */
-  gap: 3rem;             /* Espace entre la photo et le texte */
-  max-width: 1000px;     /* Largeur max du bloc de présentation */
-  margin: 2rem auto;     /* Centre le bloc horizontalement */
-  align-items: flex-start; /* Aligne le haut de l'image et du texte */
+  flex-wrap: wrap;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 2rem auto;
+  align-items: flex-start;
 }
 
-/* Style de la colonne image */
 .about-image {
-  flex: 1;               /* Prend une part de l'espace */
-  min-width: 300px;      /* Largeur minimum avant de passer à la ligne */
+  flex: 1;
+  min-width: 300px;
 }
 
 .about-image img {
-  width: 100%;           /* L'image prend toute la largeur de sa colonne */
+  width: 100%;
   height: auto;
-  border-radius: 30px;   /* Bords doux arrondis */
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Optionnel : ombre légère */
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   display: block;
 }
 
-/* Style de la colonne texte */
 .about-text {
-  flex: 2;               /* Donne plus d'espace au texte qu'à l'image */
+  flex: 2;
   min-width: 300px;
 }
 
 .about-text h2 {
-  margin-top: 0;         /* Aligne le premier titre avec le haut de l'image */
+  margin-top: 0;
   color: #333;
 }
 
 .about-text p {
-  line-height: 1.6;      /* Améliore le confort de lecture */
-  font-size: 1.1rem;     /* Même taille que les accordéons */
+  line-height: 1.6;
+  font-size: 1.1rem;
 }
 
-/* Adaptation pour mobile */
-@media (max-width: 768px) {
-  .about-container {
-    flex-direction: column; /* Empile image et texte sur petit écran */
-    text-align: center;
-  }
-  
-  .about-image {
-    max-width: 300px;    /* Évite que la photo soit géante sur mobile */
-    margin: 0 auto;      /* Centre la photo */
-  }
-}
-/* S'assure que le viewport est bien pris en compte */
-html, body {
-  height: 100%;
-}
+/* =========================
+   HOME (PAGE D'ACCUEIL) - CHOIX 2
+   Objectif : moins d'espace vide sur desktop,
+   contenu centré, image + boutons plus grands,
+   réduction logo->titre, + espace titre->image,
+   et pas de scroll (dans la mesure du possible).
+========================= */
 
-/* PAGE D'ACCUEIL SPÉCIFIQUE */
+/* Le body devient une colonne "plein écran" */
 body.home {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Pour éviter le scroll : */
-  overflow-y: hidden;
+
+  /* on évite le scroll sur la home */
+  overflow: hidden;
 }
 
-/* Réduire l'espace vertical du header sur la home */
+/* Header plus compact + contrôle fin de l'espacement */
 body.home header {
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-}
-
-/* Logo un peu plus proche du titre */
-body.home .logo {
-  width: 230px;          /* taille du logo sur la home */
-  height: auto;
-  display: block;
-  margin: 0 auto 0.2rem auto; /* petit espace sous le logo */
-}
-
-/* Réduire l'espace entre logo et titre + taille un peu plus souple */
-body.home header h1 {
-  margin: 0.1rem 0 0;    /* quasi aucun espace au-dessus et au-dessous */
-  font-size: clamp(2.6rem, 5vw, 3.6rem); /* s’adapte mobile / desk */
-}
-
-/* Main compact + centré */
-body.home main {
-  padding-top: 0.3rem;
-  padding-bottom: 0.3rem;
+  padding: 1rem 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.15rem;          /* réduit réellement l’espace logo -> titre */
 }
 
-/* Image d'accueil : taille contrôlée pour éviter le scroll */
+/* Logo responsive (plus grand sur desktop) */
+body.home .logo {
+  width: clamp(220px, 22vw, 340px);
+  margin: 0;             /* important */
+}
+
+/* Titre sans marges parasites */
+body.home header h1 {
+  margin: 0;             /* important pour réduire l'espace */
+  line-height: 1;
+  font-size: clamp(2.8rem, 4.4vw, 4.8rem);
+}
+
+/* Main occupe l'espace restant et centre le contenu */
+body.home main {
+  flex: 1;
+  padding: 0.6rem 1rem 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* clé du "choix 2" : moins d'espace vide */
+  gap: 1.2rem;               /* espace entre image et nav */
+}
+
+/* Plus d'espace entre titre et image (mobile + desk) */
+body.home .highlight {
+  margin-top: 0.9rem;
+}
+
+/* Image plus grande sur mobile, et plus grande sur desktop
+   tout en restant compatible "pas de scroll" */
 body.home .highlight img {
-  display: block;
-  margin: 0.4rem auto 0.6rem;
-  max-width: 260px;      /* taille par défaut (mobile) */
+  width: min(92vw, 520px);
   height: auto;
-  max-height: 30vh;      /* ne prend pas trop de hauteur sur petits écrans */
-  border-radius: 10px;
+  max-height: 42vh;      /* garde de la place pour les boutons */
+  margin: 0 auto;
+  border-radius: 12px;
 }
 
-/* Sur desktop : agrandir un peu l'image */
-@media (min-width: 768px) {
-  body.home .highlight img {
-    max-width: 380px;    /* image plus grande sur écran large */
-    max-height: 40vh;
-  }
-}
-
-/* Navigation plus compacte pour limiter la hauteur totale */
+/* Boutons plus grands, et nav plus présente */
 body.home .main-nav {
-  margin-top: 0.4rem;
-  gap: 0.5rem 0.8rem;
+  margin-top: 0;
+  gap: 0.8rem 1rem;
 }
 
 body.home .btn {
-  padding: 0.4rem 0.9rem;
-  font-size: 0.95rem;
+  padding: 0.7rem 1.25rem;
+  font-size: 1.05rem;
+  border-radius: 8px;
+}
+
+/* Desktop : encore un peu plus grand */
+@media (min-width: 900px) {
+  body.home .highlight img {
+    width: min(560px, 40vw);
+    max-height: 48vh;
+  }
+
+  body.home .btn {
+    padding: 0.85rem 1.45rem;
+    font-size: 1.15rem;
+  }
+}
+
+/* =========================
+   RESPONSIVE À PROPOS
+========================= */
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-image {
+    max-width: 300px;
+    margin: 0 auto;
+  }
 }
