@@ -24,6 +24,21 @@ header h1 {
   color: #333;                         /* Couleur du titre */
   margin-bottom: 0.5rem;
 }
+/* Style pour la zone de texte sous le titre principal */
+.header-description {
+  font-family: Arial, sans-serif; /* Même police que le corps et les accordéons */
+  font-size: 1.1rem;              /* Même taille que .accordion-button */
+  color: #333;                    /* Même couleur de texte */
+  max-width: 800px;               /* Optionnel : pour éviter que le texte soit trop large sur grand écran */
+  margin: 0 auto 1.5rem auto;     /* Centre le bloc et ajoute de l'espace en bas */
+  line-height: 1.5;               /* Améliore la lisibilité */
+}
+
+/* On s'assure que le lien de retour ne colle pas au texte */
+header a {
+  display: inline-block;
+  margin-top: 10px;
+}
 
 .logo {
   width: 180px;      /* Ajuste selon la taille souhaitée */
