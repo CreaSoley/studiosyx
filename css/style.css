@@ -100,7 +100,7 @@ main {
 }
 
 .highlight img {
-  max-width: 300px;     /* ou 250px selon ton goût */
+  max-width: 400px;     /* ou 250px selon ton goût */
   height: auto;
   display: block;
   margin: 1rem auto;
