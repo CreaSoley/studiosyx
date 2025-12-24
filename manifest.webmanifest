@@ -6,6 +6,7 @@
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/studiosyx/icons/icon-192.png",
@@ -16,6 +17,18 @@
       "src": "/studiosyx/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/studiosyx/screenshots/screen1.jpeg",
+      "sizes": "540x720",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/studiosyx/screenshots/screen2.png",
+      "sizes": "540x720",
+      "type": "image/jpeg"
     }
   ]
 }
