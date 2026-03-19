@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#f5f0eb"/>
+  <title>Arts Visuels — Studio Syx</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── styles galerie dynamique ── */
+    .gallery-section { margin-bottom: 3rem; }
+    .gallery-section h2 {
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid currentColor;
+      opacity: 0.6;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .oeuvre-card {
+      display: flex;
+      flex-direction: column;
+    }
+    .oeuvre-card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+    .oeuvre-card .card-info {
+      padding: 0.9rem 0;
+    }
+    .oeuvre-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+    .oeuvre-card p  { font-size: 0.82rem; opacity: 0.65; margin: 0.1rem 0; }
+    .oeuvre-card .intention {
+      font-size: 0.82rem;
+      opacity: 0.55;
+      font-style: italic;
+      margin-top: 0.3rem;
+    }
+    .empty-section {
+      opacity: 0.4;
+      font-size: 0.85rem;
+      font-style: italic;
+      padding: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html"><img src="images/logo.png" alt="Logo Studio Syx" class="logo"/></a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Arts Visuels</h1>
+    <p class="intro">Bienvenue dans ma galerie d'arts visuels. Vous trouverez ici mes différentes explorations à travers l'aquarelle, l'acrylique et l'encre de chine.</p>
+    <p><a href="index.html">← Retour à l'accueil</a></p>
+
+    <div id="gallery-container">
+      <!-- rempli par JS -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Studio Syx — Alyxia Collet</p>
+  </footer>
+
+  <script>
+  (function() {
+    // ── Données par défaut (identiques à admin.html) ──
+    const DEFAULT = [
+      {
+        section: 'Aquarelle',
+        oeuvres: [
+          { id:'av001', title:'Farandole de méduses', img:'images/av/aquarelle_01.jpeg', date:'2025', technique:'Aquarelle', intention:'', visible:true },
+          { id:'av002', title:'Terrarium', img:'images/av/aquarelle_02.jpeg', date:'2025', technique:'Aquarelle + marqueur acrylique', intention:'', visible:true },
+        ]
+      },
+      {
+        section: 'Crayons de couleur',
+        oeuvres: [
+          { id:'av003', title:'Jinx', img:'images/av/crayons_01.jpeg', date:'2025', technique:'Crayons de couleur et feutres à alcool', intention:'', visible:true },
+          { id:'av004', title:'Terrarium', img:'images/av/crayons_02.jpeg', date:'2025', technique:'', intention:'', visible:true },
+        ]
+      },
+      {
+        section: 'Acrylique',
+        oeuvres: [
+          { id:'av005', title:'La croqueuse de pommes', img:'images/av/acrylique_01.jpeg', date:'2025', technique:'Acrylique sur papier', intention:'', visible:true },
+        ]
+      },
+      {
+        section: 'Encre de Chine',
+        oeuvres: [
+          { id:'av006', title:'Le monstre d\'amour', img:'images/av/encrechine_01.jpeg', date:'2025', technique:'Encre de Chine', intention:'', visible:true },
+        ]
+      }
+    ];
+
+    function getData() {
+      try {
+        const saved = localStorage.getItem('studiosyx_data');
+        if (saved) return JSON.parse(saved).visuels || DEFAULT;
+      } catch(e) {}
+      return DEFAULT;
+    }
+
+    function render() {
+      const container = document.getElementById('gallery-container');
+      const sections = getData();
+      container.innerHTML = '';
+
+      sections.forEach(sec => {
+        const visible = sec.oeuvres.filter(o => o.visible);
+        if (visible.length === 0) return; // section vide = cachée côté public
+
+        const secEl = document.createElement('div');
+        secEl.className = 'gallery-section';
+        secEl.innerHTML = `<h2>${sec.section}</h2>`;
+
+        const grid = document.createElement('div');
+        grid.className = 'cards-grid';
+
+        visible.forEach(o => {
+          const card = document.createElement('div');
+          card.className = 'oeuvre-card';
+          card.innerHTML = `
+            ${o.img ? `<img src="${o.img}" alt="${o.title}" loading="lazy">` : ''}
+            <div class="card-info">
+              <h3>${o.title}</h3>
+              ${o.date     ? `<p><strong>Date :</strong> ${o.date}</p>` : ''}
+              ${o.technique? `<p><strong>Technique :</strong> ${o.technique}</p>` : ''}
+              ${o.intention? `<p class="intention"><strong>Intention artistique :</strong> ${o.intention}</p>` : ''}
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        secEl.appendChild(grid);
+        container.appendChild(secEl);
+      });
+
+      if (container.innerHTML === '') {
+        container.innerHTML = '<p class="empty-section">Aucune œuvre à afficher pour le moment.</p>';
+      }
+    }
+
+    render();
+
+    // Mise à jour si l'admin modifie dans un autre onglet
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'studiosyx_data') render();
+    });
+  })();
+  </script>
+</body>
+</html>

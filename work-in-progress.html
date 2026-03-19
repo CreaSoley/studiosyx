@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#f5f0eb"/>
+  <title>Work In Progress — Studio Syx</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* WIP : layout vertical par projet = séquence d'étapes */
+    .project-section { margin-bottom: 3.5rem; }
+    .project-section h2 {
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid currentColor;
+      opacity: 0.6;
+    }
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .step-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .step-card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+    .step-card .step-info h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+    .step-card .step-info p { font-size: 0.82rem; opacity: 0.65; margin: 0.15rem 0; }
+    .step-card .step-info .description {
+      font-size: 0.82rem; opacity: 0.55;
+      font-style: italic; margin-top: 0.4rem;
+    }
+    .empty-section { opacity: 0.4; font-size: 0.85rem; font-style: italic; padding: 1rem 0; }
+    @media (max-width: 620px) {
+      .step-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html"><img src="images/logo.png" alt="Logo Studio Syx" class="logo"/></a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Work In Progress</h1>
+    <p class="intro">Bienvenue dans ma galerie de travaux en cours. Ici vous pourrez découvrir certains de mes travaux étapes par étapes.</p>
+    <p><a href="index.html">← Retour à l'accueil</a></p>
+
+    <div id="gallery-container"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Studio Syx — Alyxia Collet</p>
+  </footer>
+
+  <script>
+  (function() {
+    const DEFAULT = [
+      {
+        section: 'Fresque dragon en pyrogravure',
+        oeuvres: [
+          { id:'wip001', title:'Etape 1 : Esquisse du dragon sur le support', img:'images/wip/wip01d.jpeg', date:'2025', technique:'', intention:'Où tu en es, recherches, esquisses, étapes.', visible:true },
+          { id:'wip002', title:'Etape 2 : Début de la pyrogravure', img:'images/wip/wip1d.jpeg', date:'2025', technique:'', intention:'Où tu en es, recherches, esquisses, étapes.', visible:true },
+          { id:'wip003', title:'Etape 3 : Pyrogravure d\'une des pattes avant', img:'images/wip/wip2d.jpeg', date:'2025', technique:'', intention:'Où tu en es, recherches, esquisses, étapes.', visible:true },
+          { id:'wip004', title:'Etape 4 : Pyrogravure de la tête', img:'images/wip/wip03d.jpeg', date:'2025', technique:'', intention:'Où tu en es, recherches, esquisses, étapes.', visible:true },
+          { id:'wip005', title:'Etape 5 : Pyrogravure de la crête', img:'images/wip/wip3d.jpeg', date:'2025', technique:'', intention:'Où tu en es, recherches, esquisses, étapes.', visible:true },
+        ]
+      },
+      {
+        section: 'Projet 2',
+        oeuvres: [
+          { id:'wip006', title:'Titre du projet', img:'images/wip2.jpg', date:'', technique:'', intention:'', visible:true },
+        ]
+      }
+    ];
+
+    function getData() {
+      try {
+        const saved = localStorage.getItem('studiosyx_data');
+        if (saved) return JSON.parse(saved).wip || DEFAULT;
+      } catch(e) {}
+      return DEFAULT;
+    }
+
+    function render() {
+      const container = document.getElementById('gallery-container');
+      const sections = getData();
+      container.innerHTML = '';
+
+      sections.forEach(sec => {
+        const visible = sec.oeuvres.filter(o => o.visible);
+        if (visible.length === 0) return;
+
+        const secEl = document.createElement('div');
+        secEl.className = 'project-section';
+        secEl.innerHTML = `<h2>${sec.section}</h2>`;
+
+        const list = document.createElement('div');
+        list.className = 'steps-list';
+
+        visible.forEach(o => {
+          const step = document.createElement('div');
+          step.className = 'step-card';
+          step.innerHTML = `
+            ${o.img ? `<img src="${o.img}" alt="${o.title}" loading="lazy">` : '<div style="background:#e8d5ca;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;opacity:0.4">🖼</div>'}
+            <div class="step-info">
+              <h3>${o.title}</h3>
+              ${o.date      ? `<p><strong>Début :</strong> ${o.date}</p>` : ''}
+              ${o.technique ? `<p><strong>Technique :</strong> ${o.technique}</p>` : ''}
+              ${o.intention ? `<p class="description"><strong>Description :</strong> ${o.intention}</p>` : ''}
+            </div>
+          `;
+          list.appendChild(step);
+        });
+
+        secEl.appendChild(list);
+        container.appendChild(secEl);
+      });
+
+      if (container.innerHTML === '') {
+        container.innerHTML = '<p class="empty-section">Aucun projet en cours pour le moment.</p>';
+      }
+    }
+
+    render();
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'studiosyx_data') render();
+    });
+  })();
+  </script>
+</body>
+</html>
