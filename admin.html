@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Syx — Administration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0eb;
+    --muted: #8a8076;
+    --accent: #c4785a;
+    --accent-light: #e8d5ca;
+    --success: #6a9e7f;
+    --danger: #b85c5c;
+    --border: #d8d0c8;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 12px rgba(26,23,20,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+  }
+  .login-box {
+    background: var(--paper);
+    padding: 3rem 2.5rem;
+    width: 340px;
+    text-align: center;
+  }
+  .login-box h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .login-box p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .login-box input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-box input:focus { border-color: var(--accent); }
+  .btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent); }
+  .login-error {
+    color: var(--danger);
+    font-size: 0.8rem;
+    margin-top: 0.8rem;
+    display: none;
+  }
+
+  /* ── LAYOUT ADMIN ── */
+  #admin-screen { display: none; }
+
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+  }
+  header span { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .btn-logout {
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid rgba(245,240,235,0.3);
+    padding: 0.4rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-logout:hover { border-color: var(--accent); color: var(--accent); }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 0.7rem 1.4rem;
+    background: transparent;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+  /* ── SECTION GALERIE ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.3rem;
+  }
+  .btn-add {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.55rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-add:hover { background: #b36a4c; }
+
+  /* ── CARDS GRILLE ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .oeuvre-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, opacity 0.3s;
+    position: relative;
+  }
+  .oeuvre-card.hidden-card { opacity: 0.45; }
+  .oeuvre-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+  }
+  .card-img-placeholder {
+    width: 100%;
+    height: 160px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 2rem;
+  }
+  .card-body { padding: 0.8rem; }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+  }
+  .card-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.6rem; }
+  .card-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .badge-visible { background: var(--success); color: white; }
+  .badge-hidden { background: var(--muted); color: white; }
+  .card-actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .btn-sm {
+    padding: 0.3rem 0.7rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .btn-sm:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn-sm.danger:hover { background: var(--danger); border-color: var(--danger); color: white; }
+  .btn-sm.toggle-on { background: var(--success); color: white; border-color: var(--success); }
+  .btn-sm.toggle-off { background: var(--muted); color: white; border-color: var(--muted); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,23,20,0.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    width: 100%;
+    max-width: 540px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+  }
+  .modal h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.8rem;
+  }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--accent); }
+  .form-hint { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+  .modal-actions {
+    display: flex;
+    gap: 0.7rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .btn-cancel {
+    padding: 0.65rem 1.3rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .btn-save {
+    padding: 0.65rem 1.5rem;
+    background: var(--ink);
+    color: white;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-save:hover { background: var(--accent); }
+
+  /* ── EXPORT ── */
+  .export-box {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+  .export-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .export-box p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; }
+  .export-btns { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .btn-export {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-export:hover { background: var(--ink); color: white; }
+
+  /* ── NOTICE SAUVEGARDE ── */
+  .save-notice {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--success);
+    color: white;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  .save-notice.show { opacity: 1; transform: translateY(0); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    border: 2px dashed var(--border);
+  }
+  .empty-state p { font-size: 0.9rem; margin-top: 0.5rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header { padding: 0.8rem 1rem; }
+    .container { padding: 1rem; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ LOGIN ═══════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Studio Syx</h1>
+    <p>Espace administration</p>
+    <input type="password" id="pwd-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn-primary" onclick="login()">Accéder</button>
+    <div class="login-error" id="login-error">Mot de passe incorrect.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ ADMIN ═══════════════════════════ -->
+<div id="admin-screen">
+  <header>
+    <div>
+      <h1>Studio Syx — Administration</h1>
+      <span>Gestion des œuvres</span>
+    </div>
+    <button class="btn-logout" onclick="logout()">Déconnexion</button>
+  </header>
+
+  <div class="container">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('visuels')">Arts Visuels</button>
+      <button class="tab-btn" onclick="switchTab('decoratifs')">Arts Décoratifs</button>
+      <button class="tab-btn" onclick="switchTab('wip')">Work In Progress</button>
+    </div>
+
+    <!-- ── ARTS VISUELS ── -->
+    <div id="tab-visuels">
+      <div id="sections-visuels"></div>
+    </div>
+
+    <!-- ── ARTS DÉCORATIFS ── -->
+    <div id="tab-decoratifs" style="display:none">
+      <div id="sections-decoratifs"></div>
+    </div>
+
+    <!-- ── WORK IN PROGRESS ── -->
+    <div id="tab-wip" style="display:none">
+      <div id="sections-wip"></div>
+    </div>
+
+    <!-- EXPORT -->
+    <div class="export-box">
+      <h3>📋 Exporter les données</h3>
+      <p>Envoie ce fichier JSON à ton développeur pour une mise à jour permanente sur GitHub. Les modifications faites ici sont déjà visibles sur ton appareil.</p>
+      <div class="export-btns">
+        <button class="btn-export" onclick="exportJSON()">⬇ Télécharger le JSON</button>
+        <button class="btn-export" onclick="copyJSON()">📋 Copier le JSON</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MODAL ═══════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3 id="modal-title">Ajouter une œuvre</h3>
+    <div class="form-group">
+      <label>Page</label>
+      <select id="f-page">
+        <option value="visuels">Arts Visuels</option>
+        <option value="decoratifs">Arts Décoratifs</option>
+        <option value="wip">Work In Progress</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Catégorie / Section</label>
+      <input type="text" id="f-section" placeholder="Ex: Aquarelle, Crochet…">
+    </div>
+    <div class="form-group">
+      <label>Titre de l'œuvre</label>
+      <input type="text" id="f-title" placeholder="Ex: Farandole de méduses">
+    </div>
+    <div class="form-group">
+      <label>Chemin de l'image</label>
+      <input type="text" id="f-img" placeholder="images/av/aquarelle_01.jpeg">
+      <div class="form-hint">Chemin relatif depuis la racine du site. L'image doit être uploadée sur GitHub.</div>
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="text" id="f-date" placeholder="2025">
+    </div>
+    <div class="form-group">
+      <label>Technique</label>
+      <input type="text" id="f-technique" placeholder="Ex: Aquarelle + marqueur acrylique">
+    </div>
+    <div class="form-group">
+      <label>Intention artistique</label>
+      <textarea id="f-intention" rows="3" placeholder="Description ou laisser vide…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Visibilité</label>
+      <select id="f-visible">
+        <option value="true">✅ Visible sur le site</option>
+        <option value="false">🙈 Masquée (brouillon)</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-save" onclick="saveOeuvre()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTICE -->
+<div class="save-notice" id="save-notice">✓ Enregistré</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// CONFIG — À PERSONNALISER
+// ═══════════════════════════════════════════════════
+const PASSWORD = 'studiosyx2025'; // ← changer ici
+
+// Données par défaut (état initial du site)
+const DEFAULT_DATA = {
+  visuels: [
+    {
+      section: 'Aquarelle',
+      oeuvres: [
+        { id: 'av001', title: 'Farandole de méduses', img: 'images/av/aquarelle_01.jpeg', date: '2025', technique: 'Aquarelle', intention: '', visible: true },
+        { id: 'av002', title: 'Terrarium', img: 'images/av/aquarelle_02.jpeg', date: '2025', technique: 'Aquarelle + marqueur acrylique', intention: '', visible: true },
+      ]
+    },
+    {
+      section: 'Crayons de couleur',
+      oeuvres: [
+        { id: 'av003', title: 'Jinx', img: 'images/av/crayons_01.jpeg', date: '2025', technique: 'Crayons de couleur et feutres à alcool', intention: '', visible: true },
+        { id: 'av004', title: 'Terrarium', img: 'images/av/crayons_02.jpeg', date: '2025', technique: '', intention: '', visible: true },
+      ]
+    },
+    {
+      section: 'Acrylique',
+      oeuvres: [
+        { id: 'av005', title: 'La croqueuse de pommes', img: 'images/av/acrylique_01.jpeg', date: '2025', technique: 'Acrylique sur papier', intention: '', visible: true },
+      ]
+    },
+    {
+      section: 'Encre de Chine',
+      oeuvres: [
+        { id: 'av006', title: 'Le monstre d\'amour', img: 'images/av/encrechine_01.jpeg', date: '2025', technique: 'Encre de Chine', intention: '', visible: true },
+      ]
+    }
+  ],
+  decoratifs: [
+    {
+      section: 'Créations en perles',
+      oeuvres: [
+        { id: 'ad001', title: 'Crocodiles', img: 'images/ad/crocodiles_01.jpeg', date: '2025', technique: 'Tissage de perles de rocailles', intention: '', visible: true },
+        { id: 'ad002', title: 'Pastèque', img: 'images/ad/pasteque_01.jpeg', date: '2025', technique: 'Tissage de perles de rocailles', intention: '', visible: true },
+      ]
+    },
+    {
+      section: 'Crochet',
+      oeuvres: [
+        { id: 'ad003', title: 'Petit napperon en laine', img: 'images/ad/napperon_01.jpeg', date: '2025', technique: 'Crochet', intention: '', visible: true },
+      ]
+    },
+    {
+      section: 'Modelage en argile',
+      oeuvres: [
+        { id: 'ad004', title: '50 ans de mariage', img: 'images/ad/maries50.jpeg', date: '2025', technique: 'Argile auto-durcissante', intention: '', visible: true },
+      ]
+    }
+  ],
+  wip: [
+    {
+      section: 'En cours',
+      oeuvres: []
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let data = {};
+let editingId = null;
+let currentTab = 'visuels';
+
+function loadData() {
+  const saved = localStorage.getItem('studiosyx_data');
+  data = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+
+function saveData() {
+  localStorage.setItem('studiosyx_data', JSON.stringify(data));
+  flashSaved();
+}
+
+function flashSaved() {
+  const n = document.getElementById('save-notice');
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2000);
+}
+
+// ═══════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════
+function login() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    loadData();
+    renderAll();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function logout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('pwd-input').value = '';
+}
+
+// ═══════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['visuels','decoratifs','wip'][i] === tab);
+  });
+  ['visuels','decoratifs','wip'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function renderAll() {
+  renderPage('visuels');
+  renderPage('decoratifs');
+  renderPage('wip');
+}
+
+function renderPage(page) {
+  const container = document.getElementById('sections-'+page);
+  container.innerHTML = '';
+
+  const sections = data[page] || [];
+
+  sections.forEach((sec, si) => {
+    const div = document.createElement('div');
+    div.style.marginBottom = '2rem';
+    div.innerHTML = `
+      <div class="section-header">
+        <h2>${sec.section}</h2>
+        <button class="btn-add" onclick="openModal(null,'${page}','${sec.section}')">+ Ajouter une œuvre</button>
+      </div>
+      <div class="cards-grid" id="grid-${page}-${si}"></div>
+    `;
+    container.appendChild(div);
+
+    const grid = div.querySelector(`#grid-${page}-${si}`);
+
+    if (sec.oeuvres.length === 0) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div style="font-size:2rem">🎨</div><p>Aucune œuvre dans cette section.<br>Clique sur « Ajouter » pour commencer.</p></div>`;
+    } else {
+      sec.oeuvres.forEach(o => {
+        const card = document.createElement('div');
+        card.className = 'oeuvre-card' + (o.visible ? '' : ' hidden-card');
+        card.innerHTML = `
+          <span class="card-badge ${o.visible ? 'badge-visible' : 'badge-hidden'}">${o.visible ? 'Visible' : 'Masquée'}</span>
+          ${o.img
+            ? `<img src="${o.img}" alt="${o.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+            : ''}
+          <div class="card-img-placeholder" style="${o.img ? 'display:none' : ''}">🖼</div>
+          <div class="card-body">
+            <div class="card-title">${o.title}</div>
+            <div class="card-meta">${[o.technique, o.date].filter(Boolean).join(' · ')}</div>
+            <div class="card-actions">
+              <button class="btn-sm" onclick="openModal('${o.id}','${page}')">✏️ Modifier</button>
+              <button class="btn-sm ${o.visible ? 'toggle-on' : 'toggle-off'}" onclick="toggleVisible('${o.id}','${page}')">${o.visible ? '👁 Visible' : '🙈 Masquée'}</button>
+              <button class="btn-sm danger" onclick="deleteOeuvre('${o.id}','${page}')">🗑</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+  });
+
+  // Bouton nouvelle section
+  const addSec = document.createElement('button');
+  addSec.className = 'btn-export';
+  addSec.style.marginTop = '0.5rem';
+  addSec.textContent = '+ Nouvelle section';
+  addSec.onclick = () => {
+    const name = prompt('Nom de la nouvelle section :');
+    if (name && name.trim()) {
+      data[page].push({ section: name.trim(), oeuvres: [] });
+      saveData();
+      renderAll();
+    }
+  };
+  container.appendChild(addSec);
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════
+function openModal(id, page, defaultSection) {
+  editingId = id;
+  const overlay = document.getElementById('modal-overlay');
+
+  document.getElementById('f-page').value = page || currentTab;
+
+  if (id) {
+    // MODE ÉDITION
+    const o = findOeuvre(id, page);
+    document.getElementById('modal-title').textContent = 'Modifier l\'œuvre';
+    document.getElementById('f-section').value = findSection(id, page);
+    document.getElementById('f-title').value = o.title;
+    document.getElementById('f-img').value = o.img;
+    document.getElementById('f-date').value = o.date;
+    document.getElementById('f-technique').value = o.technique;
+    document.getElementById('f-intention').value = o.intention;
+    document.getElementById('f-visible').value = String(o.visible);
+  } else {
+    // MODE AJOUT
+    document.getElementById('modal-title').textContent = 'Ajouter une œuvre';
+    document.getElementById('f-section').value = defaultSection || '';
+    document.getElementById('f-title').value = '';
+    document.getElementById('f-img').value = '';
+    document.getElementById('f-date').value = new Date().getFullYear();
+    document.getElementById('f-technique').value = '';
+    document.getElementById('f-intention').value = '';
+    document.getElementById('f-visible').value = 'true';
+  }
+
+  overlay.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  editingId = null;
+}
+
+function saveOeuvre() {
+  const page = document.getElementById('f-page').value;
+  const section = document.getElementById('f-section').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  const img = document.getElementById('f-img').value.trim();
+  const date = document.getElementById('f-date').value.trim();
+  const technique = document.getElementById('f-technique').value.trim();
+  const intention = document.getElementById('f-intention').value.trim();
+  const visible = document.getElementById('f-visible').value === 'true';
+
+  if (!title) { alert('Le titre est obligatoire.'); return; }
+
+  if (editingId) {
+    // MODIFIER
+    const o = findOeuvre(editingId, page);
+    if (o) { Object.assign(o, { title, img, date, technique, intention, visible }); }
+  } else {
+    // AJOUTER
+    let sec = data[page].find(s => s.section === section);
+    if (!sec) {
+      sec = { section: section || 'Divers', oeuvres: [] };
+      data[page].push(sec);
+    }
+    const newId = page.slice(0,2) + Date.now();
+    sec.oeuvres.push({ id: newId, title, img, date, technique, intention, visible });
+  }
+
+  saveData();
+  renderAll();
+  closeModal();
+}
+
+// ═══════════════════════════════════════════════════
+// ACTIONS RAPIDES
+// ═══════════════════════════════════════════════════
+function toggleVisible(id, page) {
+  const o = findOeuvre(id, page);
+  if (o) { o.visible = !o.visible; saveData(); renderAll(); }
+}
+
+function deleteOeuvre(id, page) {
+  if (!confirm('Supprimer cette œuvre définitivement ?')) return;
+  data[page].forEach(sec => {
+    sec.oeuvres = sec.oeuvres.filter(o => o.id !== id);
+  });
+  saveData();
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function findOeuvre(id, page) {
+  for (const sec of (data[page] || [])) {
+    const o = sec.oeuvres.find(x => x.id === id);
+    if (o) return o;
+  }
+  return null;
+}
+
+function findSection(id, page) {
+  for (const sec of (data[page] || [])) {
+    if (sec.oeuvres.find(x => x.id === id)) return sec.section;
+  }
+  return '';
+}
+
+// ═══════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'studiosyx-oeuvres.json';
+  a.click();
+}
+
+function copyJSON() {
+  navigator.clipboard.writeText(JSON.stringify(data, null, 2))
+    .then(() => { flashSaved(); document.getElementById('save-notice').textContent = '✓ JSON copié !'; setTimeout(() => document.getElementById('save-notice').textContent = '✓ Enregistré', 2500); });
+}
+
+// Fermer modal en cliquant dehors
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
